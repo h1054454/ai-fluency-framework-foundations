@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Fluency Workshop · everyonecodes.io</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #140B29;
+      --card:    #1e1542;
+      --magenta: #FF4DEB;
+      --violet:  #9554FF;
+      --lime:    #DAFF54;
+      --cyan:    #00D4CF;
+      --white:   #FFFFFF;
+      --text:    rgba(255,255,255,0.85);
+      --muted:   rgba(255,255,255,0.5);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 { font-family: 'Josefin Sans', sans-serif; font-weight: 700; }
+    a { text-decoration: none; color: inherit; }
+
+    /* NAV */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(20,11,41,0.97);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    nav {
+      max-width: 1080px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 28px; height: 64px;
+    }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .nav-badge {
+      font-family: 'Josefin Sans', sans-serif; font-size: 11px;
+      font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--lime); border: 1px solid rgba(218,255,84,0.35);
+      padding: 5px 12px; border-radius: 3px;
+    }
+    .lang-toggle {
+      display: flex; gap: 4px; align-items: center;
+      font-family: 'Josefin Sans', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+    .lang-btn {
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); font-family: inherit; font-size: inherit;
+      font-weight: inherit; letter-spacing: inherit;
+      padding: 4px 6px; border-radius: 3px; transition: color 0.2s;
+    }
+    .lang-btn:hover { color: var(--white); }
+    .lang-btn.active { color: var(--violet); }
+    .lang-sep { color: rgba(255,255,255,0.2); }
+
+    /* HERO */
+    .hero {
+      padding: 100px 28px 80px; text-align: center;
+      background: radial-gradient(ellipse at 50% 0%, rgba(149,84,255,0.18) 0%, transparent 70%);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Josefin Sans', sans-serif; font-size: 11px;
+      font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--magenta); margin-bottom: 28px;
+    }
+    .hero-eyebrow::before, .hero-eyebrow::after {
+      content: ''; display: block; width: 32px; height: 1px; background: var(--magenta); opacity: 0.5;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 64px); line-height: 1.1; letter-spacing: -0.01em;
+      max-width: 780px; margin: 0 auto 24px;
+    }
+    .hero h1 .accent { color: var(--violet); }
+    .hero p {
+      font-size: 17px; color: var(--text); line-height: 1.75;
+      max-width: 560px; margin: 0 auto 40px;
+    }
+    .btn-primary {
+      display: inline-block; padding: 14px 36px;
+      background: linear-gradient(90deg, #FF4DEB 0%, #9554FF 100%);
+      color: var(--white); font-family: 'Josefin Sans', sans-serif;
+      font-weight: 700; font-size: 13px; letter-spacing: 0.08em;
+      text-transform: uppercase; border-radius: 4px;
+      transition: opacity 0.2s, transform 0.2s; border: none; cursor: pointer;
+    }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-2px); }
+    .hero-note { margin-top: 28px; font-size: 12px; color: var(--muted); font-family: 'Josefin Sans', sans-serif; letter-spacing: 0.05em; }
+
+    /* SECTIONS */
+    .section { padding: 80px 28px; }
+    .section-inner { max-width: 1000px; margin: 0 auto; }
+    .section-label {
+      font-family: 'Josefin Sans', sans-serif; font-size: 11px;
+      font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--violet); margin-bottom: 12px;
+    }
+    .section h2 { font-size: clamp(24px, 3.5vw, 36px); margin-bottom: 16px; }
+    .section-sub { font-size: 15px; color: var(--text); line-height: 1.75; max-width: 780px; margin-bottom: 48px; }
+
+    /* WHO */
+    .who-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .who-card { background: var(--card); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 24px 28px; }
+    .who-card h3 { font-size: 14px; margin-bottom: 6px; }
+    .who-card p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+    /* OUTCOMES */
+    .outcomes-list { display: flex; flex-direction: column; }
+    .outcome-row { display: flex; align-items: flex-start; gap: 24px; padding: 28px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .outcome-row:first-child { border-top: 1px solid rgba(255,255,255,0.06); }
+    .outcome-num { font-family: 'Josefin Sans', sans-serif; font-size: 32px; font-weight: 700; color: rgba(149,84,255,0.25); flex-shrink: 0; width: 48px; line-height: 1; }
+    .outcome-row h3 { font-size: 16px; margin-bottom: 6px; }
+    .outcome-row p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+    /* FRAMEWORK STRIP */
+    .framework-strip { background: var(--card); border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 48px 28px; }
+    .framework-inner { max-width: 1000px; margin: 0 auto; text-align: center; }
+    .framework-strip p { font-size: 14px; color: var(--muted); max-width: 500px; margin: 0 auto 28px; }
+    .pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+    .pill { font-family: 'Josefin Sans', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid rgba(149,84,255,0.45); color: var(--violet); padding: 9px 20px; border-radius: 4px; }
+
+    /* SIGNUP */
+    .signup-section { background: radial-gradient(ellipse at 50% 100%, rgba(149,84,255,0.15) 0%, transparent 70%); padding: 80px 28px; }
+    .signup-inner { max-width: 480px; margin: 0 auto; }
+    .signup-inner h2 { font-size: clamp(26px, 4vw, 38px); margin-bottom: 10px; }
+    .signup-inner > p { font-size: 14px; color: var(--text); line-height: 1.7; margin-bottom: 36px; }
+    .signup-form { display: flex; flex-direction: column; gap: 14px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-family: 'Josefin Sans', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .form-group input { background: var(--card); border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; padding: 12px 16px; font-family: 'Poppins', sans-serif; font-size: 14px; color: var(--white); outline: none; transition: border-color 0.2s; }
+    .form-group input::placeholder { color: var(--muted); }
+    .form-group input:focus { border-color: var(--violet); }
+    .form-error { display: none; background: rgba(255,77,235,0.1); border: 1px solid rgba(255,77,235,0.3); border-radius: 4px; padding: 12px 16px; font-size: 13px; color: var(--magenta); }
+    .form-error.visible { display: block; }
+    .form-note { font-size: 11px; color: var(--muted); text-align: center; font-family: 'Josefin Sans', sans-serif; letter-spacing: 0.05em; }
+
+    /* SUCCESS */
+    .success-box { display: none; text-align: center; padding: 48px 32px; background: var(--card); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; }
+    .success-box.visible { display: block; }
+    .success-icon { width: 56px; height: 56px; border-radius: 50%; background: rgba(0,212,207,0.15); border: 1px solid rgba(0,212,207,0.35); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 22px; }
+    .success-box h3 { font-size: 22px; margin-bottom: 10px; }
+    .success-box p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+    /* FOOTER */
+    footer { background: rgba(0,0,0,0.3); border-top: 1px solid rgba(255,255,255,0.06); padding: 32px 28px; }
+    .footer-inner { max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+    .footer-inner p { font-size: 12px; color: var(--muted); font-family: 'Josefin Sans', sans-serif; letter-spacing: 0.05em; }
+    .footer-inner a { color: var(--violet); transition: opacity 0.2s; }
+    .footer-inner a:hover { opacity: 0.75; }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.revealed { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 720px) {
+      /* Nav */
+      nav { padding: 0 18px; height: 56px; }
+      .nav-badge { display: none; }
+      .lang-toggle { font-size: 12px; }
+
+      /* Hero */
+      .hero { padding: 64px 20px 56px; }
+      .hero p { font-size: 15px; }
+      .btn-primary { width: 100%; text-align: center; padding: 16px 24px; font-size: 14px; }
+
+      /* Sections */
+      .section { padding: 56px 20px; }
+      .section-inner { max-width: 100%; }
+      .section-sub { margin-bottom: 32px; }
+
+      /* Who grid */
+      .who-grid { grid-template-columns: 1fr; }
+
+      /* Outcomes */
+      .outcome-row { gap: 16px; padding: 22px 0; }
+      .outcome-num { font-size: 24px; width: 36px; }
+      .outcome-row h3 { font-size: 15px; }
+
+      /* Framework strip */
+      .framework-strip { padding: 40px 20px; }
+
+      /* Signup */
+      .signup-section { padding: 56px 20px; }
+      .form-row { grid-template-columns: 1fr; }
+      .form-group input { padding: 14px 16px; font-size: 16px; } /* 16px prevents iOS zoom */
+
+      /* Footer */
+      footer { padding: 24px 20px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 6px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header>
+    <nav>
+      <a href="https://everyonecodes.io" class="logo">
+        <img src="/logo.png" alt="everyone codes" style="height:34px; width:auto;" />
+      </a>
+      <div class="nav-right">
+        <div class="nav-badge" data-i18n="nav.badge">Workshop</div>
+        <div class="lang-toggle">
+          <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+          <span class="lang-sep">|</span>
+          <button class="lang-btn" id="btn-de" onclick="setLang('de')">DE</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-eyebrow" data-i18n="hero.eyebrow">AI Fluency Workshop</div>
+    <h1>
+      <span data-i18n="hero.h1a">Your organisation,</span><br>
+      <span class="accent" data-i18n="hero.h1b">fluent in AI</span>
+    </h1>
+    <p data-i18n="hero.sub">A practical workshop for purpose-driven organisations that want to start using AI in a way that reflects their values. No hype. No jargon. A clear framework your team can use from day one.</p>
+    <a href="#signup" class="btn-primary" data-i18n="hero.cta">Join the interest list</a>
+    <p class="hero-note" data-i18n="hero.note">Workshop dates coming soon. You will be first to hear.</p>
+  </section>
+
+  <!-- WHO IT'S FOR -->
+  <section class="section">
+    <div class="section-inner">
+      <p class="section-label reveal" data-i18n="who.label">Who this is for</p>
+      <h2 class="reveal" data-i18n="who.h2">Built for organisations that care about how they grow</h2>
+      <p class="section-sub reveal" data-i18n="who.sub">This workshop is designed for teams in purpose-driven organisations and family businesses. No technical background needed. If any of these sound familiar, you are in the right place.</p>
+      <div class="who-grid">
+        <div class="who-card reveal">
+          <h3 data-i18n="who.c1.h">You lead a family business with long-term thinking</h3>
+          <p data-i18n="who.c1.p">You want to bring AI into the organisation without losing what makes it yours. Trust, relationships, and continuity matter.</p>
+        </div>
+        <div class="who-card reveal">
+          <h3 data-i18n="who.c2.h">Your organisation has a mission beyond profit</h3>
+          <p data-i18n="who.c2.p">You need AI to support your purpose, not undermine it. Ethics and values are not optional for you.</p>
+        </div>
+        <div class="who-card reveal">
+          <h3 data-i18n="who.c3.h">Your team is asking about AI but no one has a clear answer</h3>
+          <p data-i18n="who.c3.p">People are experimenting on their own. You want a shared foundation so everyone is on the same page.</p>
+        </div>
+        <div class="who-card reveal">
+          <h3 data-i18n="who.c4.h">You want a framework, not just tips</h3>
+          <p data-i18n="who.c4.p">Quick prompt tricks are not what you are after. You want a structured way of thinking that scales with your organisation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUTCOMES -->
+  <section class="section" style="padding-top: 0;">
+    <div class="section-inner">
+      <p class="section-label reveal" data-i18n="out.label">What you will walk away with</p>
+      <h2 class="reveal" data-i18n="out.h2">Five things your team will take back to work</h2>
+      <div class="outcomes-list">
+        <div class="outcome-row reveal">
+          <div class="outcome-num">01</div>
+          <div>
+            <h3 data-i18n="out.1.h">A shared language for AI across the organisation</h3>
+            <p data-i18n="out.1.p">Everyone leaves with the same framework. Decisions about when and how to use AI become easier to discuss and align on.</p>
+          </div>
+        </div>
+        <div class="outcome-row reveal">
+          <div class="outcome-num">02</div>
+          <div>
+            <h3 data-i18n="out.2.h">Practical skills that work from day one</h3>
+            <p data-i18n="out.2.p">Your team will know how to communicate with AI systems clearly, get useful results, and avoid the common mistakes that waste time.</p>
+          </div>
+        </div>
+        <div class="outcome-row reveal">
+          <div class="outcome-num">03</div>
+          <div>
+            <h3 data-i18n="out.3.h">Confidence to evaluate what AI produces</h3>
+            <p data-i18n="out.3.p">AI gets things wrong. Your team will know how to spot the issues, check what matters, and keep human judgement where it belongs.</p>
+          </div>
+        </div>
+        <div class="outcome-row reveal">
+          <div class="outcome-num">04</div>
+          <div>
+            <h3 data-i18n="out.4.h">An approach to AI that fits your values</h3>
+            <p data-i18n="out.4.p">You will leave with clear principles for using AI responsibly, in a way that reflects what your organisation stands for.</p>
+          </div>
+        </div>
+        <div class="outcome-row reveal">
+          <div class="outcome-num">05</div>
+          <div>
+            <h3 data-i18n="out.5.h">Skills that stay relevant when the next model comes out</h3>
+            <p data-i18n="out.5.p">This workshop is not built around specific tools. The 4D framework is deliberately designed to be model-agnostic. Whatever AI looks like in two years, your team will have the thinking skills to work with it well.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FRAMEWORK STRIP -->
+  <div class="framework-strip">
+    <div class="framework-inner">
+      <p class="section-label reveal" style="margin-bottom: 10px;" data-i18n="fw.label">Built on solid foundations</p>
+      <h2 class="reveal" style="margin-bottom: 12px;" data-i18n="fw.h2">From Anthropic Academy</h2>
+      <p class="reveal" data-i18n="fw.sub">This workshop is built on the AI Fluency Framework from Anthropic Academy. The four core competencies were designed from the ground up to remain relevant as AI keeps evolving. Not tied to any tool. Not based on today's hype.</p>
+      <div class="pills reveal">
+        <span class="pill" data-i18n="fw.p1">Delegation</span>
+        <span class="pill" data-i18n="fw.p2">Description</span>
+        <span class="pill" data-i18n="fw.p3">Discernment</span>
+        <span class="pill" data-i18n="fw.p4">Diligence</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIGNUP -->
+  <section class="signup-section" id="signup">
+    <div class="signup-inner">
+      <p class="section-label reveal" data-i18n="form.label">Interest list</p>
+      <h2 class="reveal" data-i18n="form.h2">Get notified when it's on</h2>
+      <p class="reveal" data-i18n="form.sub">We are confirming demand before setting a date. Leave your name and email and you will hear first. No commitment needed.</p>
+
+      <div id="form-container">
+        <form id="signup-form" class="signup-form reveal">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName" data-i18n="form.fname">First name</label>
+              <input type="text" id="firstName" name="firstName" required autocomplete="given-name" data-i18n-placeholder="form.fname.ph" placeholder="Stefan" />
+            </div>
+            <div class="form-group">
+              <label for="lastName" data-i18n="form.lname">Last name</label>
+              <input type="text" id="lastName" name="lastName" required autocomplete="family-name" data-i18n-placeholder="form.lname.ph" placeholder="Mayer" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email" data-i18n="form.email">Email</label>
+            <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@example.com" />
+          </div>
+          <div class="form-error" id="form-error"></div>
+          <button type="submit" id="submit-btn" class="btn-primary" data-i18n="form.btn">Count me in</button>
+          <p class="form-note" data-i18n="form.note">No commitment. No spam. Unsubscribe any time.</p>
+        </form>
+      </div>
+
+      <div class="success-box" id="success-container">
+        <div class="success-icon">&#10003;</div>
+        <h3 data-i18n="form.ok.h">You are on the list!</h3>
+        <p data-i18n="form.ok.p">We will be in touch as soon as a date is set. Check your inbox, a confirmation is on its way.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <p>AI Fluency Workshop &middot; <a href="https://everyonecodes.io">everyonecodes.io</a></p>
+      <p data-i18n="footer.credit">Based on the AI Fluency Framework from Anthropic Academy by Dakan &amp; Feller</p>
+    </div>
+  </footer>
+
+  <script>
+    const T = {
+      en: {
+        'nav.badge':   'Workshop',
+        'hero.eyebrow':'AI Fluency Workshop',
+        'hero.h1a':    'Your organisation,',
+        'hero.h1b':    'fluent in AI',
+        'hero.sub':    'A practical workshop for purpose-driven organisations that want to start using AI in a way that reflects their values. No hype. No jargon. A clear framework your team can use from day one.',
+        'hero.cta':    'Join the interest list',
+        'hero.note':   'Workshop dates coming soon. You will be first to hear.',
+        'who.label':   'Who this is for',
+        'who.h2':      'Built for organisations that care about how they grow',
+        'who.sub':     'This workshop is designed for teams in purpose-driven organisations and family businesses. No technical background needed. If any of these sound familiar, you are in the right place.',
+        'who.c1.h':    'You lead a family business with long-term thinking',
+        'who.c1.p':    'You want to bring AI into the organisation without losing what makes it yours. Trust, relationships, and continuity matter.',
+        'who.c2.h':    'Your organisation has a mission beyond profit',
+        'who.c2.p':    'You need AI to support your purpose, not undermine it. Ethics and values are not optional for you.',
+        'who.c3.h':    'Your team is asking about AI but no one has a clear answer',
+        'who.c3.p':    'People are experimenting on their own. You want a shared foundation so everyone is on the same page.',
+        'who.c4.h':    'You want a framework, not just tips',
+        'who.c4.p':    'Quick prompt tricks are not what you are after. You want a structured way of thinking that scales with your organisation.',
+        'out.label':   'What you will walk away with',
+        'out.h2':      'Five things your team will take back to work',
+        'out.1.h':     'A shared language for AI across the organisation',
+        'out.1.p':     'Everyone leaves with the same framework. Decisions about when and how to use AI become easier to discuss and align on.',
+        'out.2.h':     'Practical skills that work from day one',
+        'out.2.p':     'Your team will know how to communicate with AI systems clearly, get useful results, and avoid the common mistakes that waste time.',
+        'out.3.h':     'Confidence to evaluate what AI produces',
+        'out.3.p':     'AI gets things wrong. Your team will know how to spot the issues, check what matters, and keep human judgement where it belongs.',
+        'out.4.h':     'An approach to AI that fits your values',
+        'out.4.p':     'You will leave with clear principles for using AI responsibly, in a way that reflects what your organisation stands for.',
+        'out.5.h':     'Skills that stay relevant when the next model comes out',
+        'out.5.p':     'This workshop is not built around specific tools. The 4D framework is deliberately designed to be model-agnostic. Whatever AI looks like in two years, your team will have the thinking skills to work with it well.',
+        'fw.label':    'Built on solid foundations',
+        'fw.h2':       'From Anthropic Academy',
+        'fw.sub':      "This workshop is built on the AI Fluency Framework from Anthropic Academy. The four core competencies were designed from the ground up to remain relevant as AI keeps evolving. Not tied to any tool. Not based on today's hype.",
+        'fw.p1':       'Delegation',
+        'fw.p2':       'Description',
+        'fw.p3':       'Discernment',
+        'fw.p4':       'Diligence',
+        'form.label':  'Interest list',
+        'form.h2':     "Get notified when it's on",
+        'form.sub':    'We are confirming demand before setting a date. Leave your name and email and you will hear first. No commitment needed.',
+        'form.fname':  'First name',
+        'form.fname.ph': 'Stefan',
+        'form.lname':  'Last name',
+        'form.lname.ph': 'Mayer',
+        'form.email':  'Email',
+        'form.btn':    'Count me in',
+        'form.note':   'No commitment. No spam. Unsubscribe any time.',
+        'form.ok.h':   'You are on the list!',
+        'form.ok.p':   'We will be in touch as soon as a date is set. Check your inbox, a confirmation is on its way.',
+        'footer.credit': 'Based on the AI Fluency Framework from Anthropic Academy by Dakan &amp; Feller',
+        'err.generic': 'Something went wrong. Please try again.',
+        'err.network': 'Network error. Please check your connection and try again.',
+        'btn.sending': 'Sending...',
+      },
+      de: {
+        'nav.badge':   'Workshop',
+        'hero.eyebrow':'AI Fluency Workshop',
+        'hero.h1a':    'Ihre Organisation,',
+        'hero.h1b':    'KI-kompetent',
+        'hero.sub':    'Ein praxisorientierter Workshop für zweckorientierte Organisationen, die KI auf eine Weise einsetzen möchten, die ihren Werten entspricht. Kein Hype. Kein Fachjargon. Ein klares Framework, das Ihr Team ab dem ersten Tag anwenden kann.',
+        'hero.cta':    'Interesse anmelden',
+        'hero.note':   'Workshop-Termine folgen in Kürze. Sie erfahren es als Erste.',
+        'who.label':   'Für wen ist das',
+        'who.h2':      'Für Organisationen, denen ihr Wachstum wichtig ist',
+        'who.sub':     'Dieser Workshop richtet sich an Teams in zweckorientierten Organisationen und Familienunternehmen. Kein technisches Vorwissen erforderlich. Wenn das bekannt klingt, sind Sie hier richtig.',
+        'who.c1.h':    'Sie führen ein Familienunternehmen mit langfristiger Perspektive',
+        'who.c1.p':    'Sie möchten KI in die Organisation bringen, ohne zu verlieren, was sie ausmacht. Vertrauen, Beziehungen und Kontinuität sind Ihnen wichtig.',
+        'who.c2.h':    'Ihre Organisation hat eine Mission jenseits des Profits',
+        'who.c2.p':    'Sie brauchen KI, die Ihren Zweck unterstützt, nicht untergräbt. Ethik und Werte sind für Sie keine Option, sondern Grundvoraussetzung.',
+        'who.c3.h':    'Ihr Team fragt nach KI, aber niemand hat eine klare Antwort',
+        'who.c3.p':    'Alle experimentieren auf eigene Faust. Sie möchten eine gemeinsame Grundlage schaffen, damit alle am selben Strang ziehen.',
+        'who.c4.h':    'Sie möchten ein Framework, keine Tipps',
+        'who.c4.p':    'Schnelle Prompt-Tricks sind nicht das, was Sie suchen. Sie möchten eine strukturierte Denkweise, die mit Ihrer Organisation mitwächst.',
+        'out.label':   'Was Sie mitnehmen',
+        'out.h2':      'Fünf Dinge, die Ihr Team in den Alltag mitnimmt',
+        'out.1.h':     'Eine gemeinsame Sprache für KI in der Organisation',
+        'out.1.p':     'Alle verlassen den Workshop mit demselben Framework. Entscheidungen über den KI-Einsatz lassen sich leichter besprechen und abstimmen.',
+        'out.2.h':     'Praktische Fähigkeiten, die sofort funktionieren',
+        'out.2.p':     'Ihr Team lernt, klar mit KI-Systemen zu kommunizieren, nützliche Ergebnisse zu erzielen und die häufigsten Fehler zu vermeiden.',
+        'out.3.h':     'Sicherheit bei der Bewertung von KI-Ergebnissen',
+        'out.3.p':     'KI macht Fehler. Ihr Team lernt, Probleme zu erkennen, das Wesentliche zu prüfen und das menschliche Urteilsvermögen dort zu behalten, wo es hingehört.',
+        'out.4.h':     'Ein KI-Ansatz, der zu Ihren Werten passt',
+        'out.4.p':     'Sie verlassen den Workshop mit klaren Prinzipien für einen verantwortungsvollen KI-Einsatz, der widerspiegelt, wofür Ihre Organisation steht.',
+        'out.5.h':     'Fähigkeiten, die auch beim nächsten Modell relevant bleiben',
+        'out.5.p':     'Dieser Workshop ist nicht auf bestimmte Tools ausgerichtet. Das 4D-Framework wurde bewusst modell-agnostisch entwickelt. Egal wie KI in zwei Jahren aussieht, Ihr Team hat die Denkweise, um damit umzugehen.',
+        'fw.label':    'Auf soliden Grundlagen aufgebaut',
+        'fw.h2':       'Von der Anthropic Academy',
+        'fw.sub':      'Dieser Workshop basiert auf dem AI Fluency Framework der Anthropic Academy. Die vier Kernkompetenzen wurden von Grund auf so entwickelt, dass sie auch bei weiterer KI-Entwicklung relevant bleiben. Nicht an ein Tool gebunden. Nicht am Hype von heute ausgerichtet.',
+        'fw.p1':       'Delegation',
+        'fw.p2':       'Beschreibung',
+        'fw.p3':       'Urteilsvermögen',
+        'fw.p4':       'Sorgfalt',
+        'form.label':  'Interessenliste',
+        'form.h2':     'Jetzt vormerken',
+        'form.sub':    'Wir prüfen die Nachfrage, bevor wir einen Termin festlegen. Hinterlassen Sie Ihren Namen und Ihre E-Mail-Adresse und Sie hören als Erste davon. Keine Verpflichtung.',
+        'form.fname':  'Vorname',
+        'form.fname.ph': 'Stefan',
+        'form.lname':  'Nachname',
+        'form.lname.ph': 'Mayer',
+        'form.email':  'E-Mail',
+        'form.btn':    'Ich bin dabei',
+        'form.note':   'Keine Verpflichtung. Kein Spam. Jederzeit abmeldbar.',
+        'form.ok.h':   'Sie stehen auf der Liste!',
+        'form.ok.p':   'Wir melden uns, sobald ein Termin feststeht. Prüfen Sie Ihren Posteingang, eine Bestätigung ist unterwegs.',
+        'footer.credit': 'Basierend auf dem AI Fluency Framework der Anthropic Academy von Dakan &amp; Feller',
+        'err.generic': 'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.',
+        'err.network': 'Netzwerkfehler. Bitte prüfen Sie Ihre Verbindung.',
+        'btn.sending': 'Wird gesendet...',
+      }
+    };
+
+    let currentLang = 'en';
+
+    function detectLang() {
+      const saved = localStorage.getItem('lang');
+      if (saved === 'en' || saved === 'de') return saved;
+      const browser = (navigator.language || '').toLowerCase();
+      return browser.startsWith('de') ? 'de' : 'en';
+    }
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      document.documentElement.lang = lang;
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (T[lang][key] !== undefined) el.innerHTML = T[lang][key];
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (T[lang][key] !== undefined) el.placeholder = T[lang][key];
+      });
+
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+      document.getElementById('btn-de').classList.toggle('active', lang === 'de');
+    }
+
+    // Scroll reveal
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('revealed'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Form
+    const form = document.getElementById('signup-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const errorBox = document.getElementById('form-error');
+    const formContainer = document.getElementById('form-container');
+    const successContainer = document.getElementById('success-container');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorBox.classList.remove('visible');
+      submitBtn.disabled = true;
+      submitBtn.textContent = T[currentLang]['btn.sending'];
+
+      const body = {
+        firstName: form.firstName.value.trim(),
+        lastName:  form.lastName.value.trim(),
+        email:     form.email.value.trim(),
+      };
+
+      try {
+        const res = await fetch('https://formspree.io/f/xaqpzpla', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          formContainer.style.display = 'none';
+          successContainer.classList.add('visible');
+          successContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          errorBox.textContent = data.error ?? T[currentLang]['err.generic'];
+          errorBox.classList.add('visible');
+          submitBtn.disabled = false;
+          submitBtn.textContent = T[currentLang]['form.btn'];
+        }
+      } catch {
+        errorBox.textContent = T[currentLang]['err.network'];
+        errorBox.classList.add('visible');
+        submitBtn.disabled = false;
+        submitBtn.textContent = T[currentLang]['form.btn'];
+      }
+    });
+
+    // Init
+    setLang(detectLang());
+  </script>
+
+</body>
+</html>
